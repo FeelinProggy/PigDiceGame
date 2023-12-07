@@ -93,5 +93,6 @@ function generateRandomValue(minValue, maxValue) {
     return random;
 }
 function declareWinner(winner) {
-    alert(winner.name + " wins! \nScore: " + winner.score);
+    alert(winner.name + " wins! \nScore: " + winner.score + "\n\nLet's play again!");
+    location.reload();
 }

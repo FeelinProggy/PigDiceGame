@@ -155,5 +155,6 @@ function generateRandomValue(minValue:number, maxValue:number):number{
 
 function declareWinner(winner:Player){
     
-    alert(winner.name + " wins! \nScore: " + winner.score);
+    alert(winner.name + " wins! \nScore: " + winner.score + "\n\nLet's play again!");
+    location.reload();
 }
