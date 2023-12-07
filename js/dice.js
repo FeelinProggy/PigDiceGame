@@ -7,10 +7,12 @@ class Player {
 let player1;
 let player2;
 let currentPlayer;
-function generateRandomValue(minValue, maxValue) {
-    var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
-    return random;
-}
+window.onload = function () {
+    let newGameBtn = document.getElementById("new_game");
+    newGameBtn.onclick = createNewGame;
+    document.getElementById("roll").onclick = rollDie;
+    document.getElementById("hold").onclick = holdDie;
+};
 function getPlayer(player) {
     let hasValidName = false;
     let playerTextBox = document.getElementById(player);
@@ -30,12 +32,6 @@ function getPlayer(player) {
         return null;
     }
 }
-window.onload = function () {
-    let newGameBtn = document.getElementById("new_game");
-    newGameBtn.onclick = createNewGame;
-    document.getElementById("roll").onclick = rollDie;
-    document.getElementById("hold").onclick = holdDie;
-};
 function createNewGame() {
     player1 = getPlayer("player1");
     player2 = getPlayer("player2");
@@ -61,6 +57,7 @@ function rollDie() {
     let currTotal = parseInt(currTotalDisplay.value);
     let dieDisplay = document.getElementById("die");
     let playerRoll = generateRandomValue(1, 6);
+    dieDisplay.value = playerRoll.toString();
     if (playerRoll == 1) {
         currTotalDisplay.value = "0";
         changePlayers();
@@ -69,7 +66,6 @@ function rollDie() {
         currTotal += playerRoll;
         currTotalDisplay.value = currTotal.toString();
     }
-    dieDisplay.value = playerRoll.toString();
 }
 function holdDie() {
     let currTotalDisplay = document.getElementById("total");
@@ -85,4 +81,8 @@ function holdDie() {
     }
     currTotalDisplay.value = "0";
     changePlayers();
+}
+function generateRandomValue(minValue, maxValue) {
+    var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+    return random;
 }

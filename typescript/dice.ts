@@ -7,21 +7,26 @@ class Player{
         this.score = 0;
     }
 }
+
 let player1:Player;
 let player2:Player;
 let currentPlayer:Player;
 
-//
-function generateRandomValue(minValue:number, maxValue:number):number{
+window.onload = function(){
+    let newGameBtn = document.getElementById("new_game") as HTMLButtonElement;
+    newGameBtn.onclick = createNewGame;
 
-    var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
-    
-    //TODO: use random to generate a number between min and max
+    (<HTMLButtonElement>document.getElementById("roll")).onclick = rollDie;
 
-    return random;
+    (<HTMLButtonElement>document.getElementById("hold")).onclick = holdDie;
 }
 
-// Validates and creates a new player based on the player name
+/**
+ * Validates name input and creates a new player object
+ * @param player - using the HTML id to get the HTMLInputElement value
+ *   and then using that value to name and create the new Player object
+ * @returns a new Player object
+ */
 function getPlayer(player):Player | null{
     let hasValidName = false;
 
@@ -43,15 +48,6 @@ function getPlayer(player):Player | null{
     else {
         return null;
     }
-}
-
-window.onload = function(){
-    let newGameBtn = document.getElementById("new_game") as HTMLButtonElement;
-    newGameBtn.onclick = createNewGame;
-
-    (<HTMLButtonElement>document.getElementById("roll")).onclick = rollDie;
-
-    (<HTMLButtonElement>document.getElementById("hold")).onclick = holdDie;
 }
 
 function createNewGame(){
@@ -84,6 +80,10 @@ function changePlayers():void{
     (<HTMLElement>document.getElementById("current")).innerText = currentPlayer.name;
 }
 
+/**
+ * rollDie function calls generateRandomValue() to simulate the rolling die,
+ * displays the roll result and running total, and canges players if the roll is 1.
+ */
 function rollDie():void{
     let currTotalDisplay = (<HTMLInputElement>document.getElementById("total"));
     let currTotal = parseInt(currTotalDisplay.value);
@@ -91,6 +91,9 @@ function rollDie():void{
     
     //roll the die and get a random value 1 - 6 (use generateRandomValue function)
     let playerRoll = generateRandomValue(1, 6);
+
+    // display the roll result
+    dieDisplay.value = playerRoll.toString();
 
     //if the roll is 1
     if (playerRoll == 1){
@@ -100,13 +103,16 @@ function rollDie():void{
         changePlayers();
     }
     else{
+        // keep a running total of the rolls
         currTotal += playerRoll;
+        // display the current total
         currTotalDisplay.value = currTotal.toString();
     }
-    
-    dieDisplay.value = playerRoll.toString();
 }
 
+/**
+ * 
+ */
 function holdDie():void{
     //get the current turn total
     let currTotalDisplay = (<HTMLInputElement>document.getElementById("total"));
@@ -129,4 +135,14 @@ function holdDie():void{
     currTotalDisplay.value = "0";
     //change players
     changePlayers();
+}
+
+// Generates a random number between the min and max values inclusive
+function generateRandomValue(minValue:number, maxValue:number):number{
+    // Math.random() generates a decimal between 0 and 1. Multiplying by the range
+    // will give a decimal/percentage between 0 and range. Math.floor() removes the
+    // decimal adding one will make the range inclusive of the max value.
+    var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+    
+    return random;
 }
