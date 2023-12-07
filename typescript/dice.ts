@@ -7,9 +7,9 @@ class Player{
         this.score = 0;
     }
 }
-
 let player1:Player;
 let player2:Player;
+let currentPlayer:Player;
 
 //
 function generateRandomValue(minValue:number, maxValue:number):number{
@@ -45,21 +45,6 @@ function getPlayer(player):Player | null{
     }
 }
 
-function changePlayers():void{
-    let currentPlayerName = (<HTMLElement>document.getElementById("current")).innerText;
-    
-    //swap from player to player by comparing current name to player names
-    //set currentPlayerName to the next player
-    if(currentPlayerName == player1.name){
-        currentPlayerName = player2.name;
-    }
-    else{
-        currentPlayerName = player1.name;
-    }
-
-    (<HTMLElement>document.getElementById("current")).innerText = currentPlayerName;
-}
-
 window.onload = function(){
     let newGameBtn = document.getElementById("new_game") as HTMLButtonElement;
     newGameBtn.onclick = createNewGame;
@@ -82,8 +67,21 @@ function createNewGame(){
         (<HTMLInputElement>document.getElementById("player1")).setAttribute("disabled", "disabled");
         (<HTMLInputElement>document.getElementById("player2")).setAttribute("disabled", "disabled");
         changePlayers();
+    }    
+}
+
+function changePlayers():void{
+       
+    //swap from player to player by comparing current name to player names
+    //set currentPlayerName to the next player
+    if(currentPlayer == player1){
+        currentPlayer = player2;
     }
-        
+    else{
+        currentPlayer = player1;
+    }
+
+    (<HTMLElement>document.getElementById("current")).innerText = currentPlayer.name;
 }
 
 function rollDie():void{
@@ -115,9 +113,9 @@ function holdDie():void{
     let currTotal = parseInt(currTotalDisplay.value);
     
     //determine who the current player is
-    let currentPlayerName = (<HTMLElement>document.getElementById("current")).innerText;
+    currentPlayer.name = (<HTMLElement>document.getElementById("current")).innerText;
 
-    if(currentPlayerName == player1.name){
+    if(currentPlayer.name == player1.name){
         player1.score += currTotal;
         (<HTMLInputElement>document.getElementById("score1")).value = player1.score.toString();
     }

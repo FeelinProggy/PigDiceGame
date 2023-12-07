@@ -6,6 +6,7 @@ class Player {
 }
 let player1;
 let player2;
+let currentPlayer;
 function generateRandomValue(minValue, maxValue) {
     var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
     return random;
@@ -29,16 +30,6 @@ function getPlayer(player) {
         return null;
     }
 }
-function changePlayers() {
-    let currentPlayerName = document.getElementById("current").innerText;
-    if (currentPlayerName == player1.name) {
-        currentPlayerName = player2.name;
-    }
-    else {
-        currentPlayerName = player1.name;
-    }
-    document.getElementById("current").innerText = currentPlayerName;
-}
 window.onload = function () {
     let newGameBtn = document.getElementById("new_game");
     newGameBtn.onclick = createNewGame;
@@ -55,6 +46,15 @@ function createNewGame() {
         document.getElementById("player2").setAttribute("disabled", "disabled");
         changePlayers();
     }
+}
+function changePlayers() {
+    if (currentPlayer == player1) {
+        currentPlayer = player2;
+    }
+    else {
+        currentPlayer = player1;
+    }
+    document.getElementById("current").innerText = currentPlayer.name;
 }
 function rollDie() {
     let currTotalDisplay = document.getElementById("total");
@@ -74,8 +74,8 @@ function rollDie() {
 function holdDie() {
     let currTotalDisplay = document.getElementById("total");
     let currTotal = parseInt(currTotalDisplay.value);
-    let currentPlayerName = document.getElementById("current").innerText;
-    if (currentPlayerName == player1.name) {
+    currentPlayer.name = document.getElementById("current").innerText;
+    if (currentPlayer.name == player1.name) {
         player1.score += currTotal;
         document.getElementById("score1").value = player1.score.toString();
     }
