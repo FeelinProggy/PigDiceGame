@@ -7,9 +7,10 @@ class Player {
 let player1;
 let player2;
 let currentPlayer;
+let winningScore = 100;
 window.onload = function () {
-    let newGameBtn = document.getElementById("new_game");
-    newGameBtn.onclick = createNewGame;
+    let startGameBtn = document.getElementById("start_game");
+    startGameBtn.onclick = createNewGame;
     document.getElementById("roll").onclick = rollDie;
     document.getElementById("hold").onclick = holdDie;
 };
@@ -57,6 +58,7 @@ function rollDie() {
     let currTotal = parseInt(currTotalDisplay.value);
     let dieDisplay = document.getElementById("die");
     let playerRoll = generateRandomValue(1, 6);
+    roll.play();
     dieDisplay.value = playerRoll.toString();
     if (playerRoll == 1) {
         currTotalDisplay.value = "0";
@@ -67,10 +69,12 @@ function rollDie() {
         currTotalDisplay.value = currTotal.toString();
     }
     let potentialScore = currentPlayer.score + currTotal;
-    if (potentialScore >= 20) {
+    if (potentialScore >= winningScore) {
         holdDie();
-        changePlayers();
-        declareWinner(currentPlayer);
+        win.play();
+        setTimeout(function () {
+            declareWinner(currentPlayer);
+        }, 400);
     }
 }
 function holdDie() {
@@ -86,7 +90,9 @@ function holdDie() {
         document.getElementById("score2").value = player2.score.toString();
     }
     currTotalDisplay.value = "0";
-    changePlayers();
+    if (currentPlayer.score < winningScore) {
+        changePlayers();
+    }
 }
 function generateRandomValue(minValue, maxValue) {
     var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
@@ -94,5 +100,6 @@ function generateRandomValue(minValue, maxValue) {
 }
 function declareWinner(winner) {
     alert(winner.name + " wins! \nScore: " + winner.score + "\n\nLet's play again!");
-    location.reload();
 }
+const roll = new Audio('../sounds/dice_roll.mp3');
+const win = new Audio('../sounds/yay.mp3');

@@ -7,14 +7,15 @@ class Player{
         this.score = 0;
     }
 }
-
+// Setting for global access to the player objects
 let player1:Player;
 let player2:Player;
 let currentPlayer:Player;
+let winningScore:number = 100;
 
 window.onload = function(){
-    let newGameBtn = document.getElementById("new_game") as HTMLButtonElement;
-    newGameBtn.onclick = createNewGame;
+    let startGameBtn = document.getElementById("start_game") as HTMLButtonElement;
+    startGameBtn.onclick = createNewGame;
 
     (<HTMLButtonElement>document.getElementById("roll")).onclick = rollDie;
 
@@ -24,10 +25,10 @@ window.onload = function(){
 /**
  * Validates name input and creates a new player object
  * @param player - using the HTML id to get the HTMLInputElement value
- *   and then using that value to name and create the new Player object
+ *   and then using that value to update the Player object
  * @returns a new Player object
  */
-function getPlayer(player):Player | null{
+function getPlayer(player:string):Player | null{
     let hasValidName = false;
 
     let playerTextBox = (<HTMLInputElement>document.getElementById(player));
@@ -50,6 +51,7 @@ function getPlayer(player):Player | null{
     }
 }
 
+// Creates a new game by getting the player names and making the turn display visible
 function createNewGame(){
     
     player1 = getPlayer("player1");
@@ -59,7 +61,7 @@ function createNewGame(){
         //if both players do have a name start the game!
         (<HTMLElement>document.getElementById("turn")).classList.add("open");
         (<HTMLInputElement>document.getElementById("total")).value = "0";
-        //lock in player names and then change players
+        //lock in player names and then change players/set current player
         (<HTMLInputElement>document.getElementById("player1")).setAttribute("disabled", "disabled");
         (<HTMLInputElement>document.getElementById("player2")).setAttribute("disabled", "disabled");
         changePlayers();
@@ -91,6 +93,7 @@ function rollDie():void{
     
     //roll the die and get a random value 1 - 6 (use generateRandomValue function)
     let playerRoll = generateRandomValue(1, 6);
+    roll.play();
 
     // display the roll result
     dieDisplay.value = playerRoll.toString();
@@ -110,10 +113,12 @@ function rollDie():void{
     }
     let potentialScore = currentPlayer.score + currTotal;
 
-    if (potentialScore >= 20){
+    if (potentialScore >= winningScore){
         holdDie();
-        changePlayers();
-        declareWinner(currentPlayer);
+        win.play();
+        setTimeout(function() {
+            declareWinner(currentPlayer);
+        }, 400);
     }
 }
 /**
@@ -140,7 +145,9 @@ function holdDie():void{
     //reset the turn total to 0
     currTotalDisplay.value = "0";
     //change players
-    changePlayers();
+    if (currentPlayer.score < winningScore){
+        changePlayers();
+    }
 }
 
 // Generates a random number between the min and max values inclusive
@@ -153,8 +160,9 @@ function generateRandomValue(minValue:number, maxValue:number):number{
     return random;
 }
 
-function declareWinner(winner:Player){
-    
+function declareWinner(winner:Player){    
     alert(winner.name + " wins! \nScore: " + winner.score + "\n\nLet's play again!");
-    location.reload();
 }
+
+const roll = new Audio('../sounds/dice_roll.mp3');
+const win = new Audio('../sounds/yay.mp3');

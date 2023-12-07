@@ -29,9 +29,9 @@
         <input type="text" id="player2">
         <label for="score2">Score</label>
         <input type="text" id="score2" value="0" disabled>
-        <input type="button" id="new_game" value="New Game"><br>
+        <input type="button" id="start_game" value="Start Game"><br>
 
-        <section id="turn">
+        <div id="turn">
             <p><span id="current">&nbsp;</span>'s turn</p>
             <input type="button" id="roll" value="Roll">
             <input type="button" id="hold" value="Hold">
@@ -40,7 +40,8 @@
             <input type="text" id="die" disabled>
             <label for="total">Total</label>
             <input type="text" id="total" disabled>
-        </section>
+            <input type="button" id="reset" value="Reset" onClick = "window.location.reload()">
+        </div>
     </main>
 </body>
 
