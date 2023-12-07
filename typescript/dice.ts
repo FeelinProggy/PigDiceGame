@@ -11,8 +11,10 @@ class Player{
 let player1:Player;
 let player2:Player;
 
+//
 function generateRandomValue(minValue:number, maxValue:number):number{
-    var random = Math.random();
+
+    var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
     
     //TODO: use random to generate a number between min and max
 
@@ -46,7 +48,6 @@ function getPlayer(player):Player | null{
 function changePlayers():void{
     let currentPlayerName = (<HTMLElement>document.getElementById("current")).innerText;
     
-
     //swap from player to player by comparing current name to player names
     //set currentPlayerName to the next player
     if(currentPlayerName == player1.name){
@@ -55,6 +56,8 @@ function changePlayers():void{
     else{
         currentPlayerName = player1.name;
     }
+
+    (<HTMLElement>document.getElementById("current")).innerText = currentPlayerName;
 }
 
 window.onload = function(){
@@ -67,6 +70,7 @@ window.onload = function(){
 }
 
 function createNewGame(){
+    
     player1 = getPlayer("player1");
     player2 = getPlayer("player2");
     
@@ -79,18 +83,27 @@ function createNewGame(){
         (<HTMLInputElement>document.getElementById("player2")).setAttribute("disabled", "disabled");
         changePlayers();
     }
-    
-    
+        
 }
 
 function rollDie():void{
-    let currTotal = parseInt((<HTMLInputElement>document.getElementById("total")).value);
+    let currTotalDisplay = (<HTMLInputElement>document.getElementById("total"))
+    let currTotal = parseInt(currTotalDisplay.value);
     
     //roll the die and get a random value 1 - 6 (use generateRandomValue function)
+    let playerRoll = generateRandomValue(1, 6);
 
     //if the roll is 1
-    //  change players
-    //  set current total to 0
+    if (playerRoll == 1){
+        //  reset current total to 0
+        currTotalDisplay.value = "0";
+        //  change players
+        changePlayers();
+    }
+    else{
+        currTotal += playerRoll;
+        currTotalDisplay.value = currTotal.toString();
+    }
     
     //if the roll is greater than 1
     //  add roll value to current total

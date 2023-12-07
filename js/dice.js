@@ -7,7 +7,7 @@ class Player {
 let player1;
 let player2;
 function generateRandomValue(minValue, maxValue) {
-    var random = Math.random();
+    var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
     return random;
 }
 function getPlayer(player) {
@@ -37,6 +37,7 @@ function changePlayers() {
     else {
         currentPlayerName = player1.name;
     }
+    document.getElementById("current").innerText = currentPlayerName;
 }
 window.onload = function () {
     let newGameBtn = document.getElementById("new_game");
@@ -56,7 +57,17 @@ function createNewGame() {
     }
 }
 function rollDie() {
-    let currTotal = parseInt(document.getElementById("total").value);
+    let currTotalDisplay = document.getElementById("total");
+    let currTotal = parseInt(currTotalDisplay.value);
+    let playerRoll = generateRandomValue(1, 6);
+    if (playerRoll == 1) {
+        currTotalDisplay.value = "0";
+        changePlayers();
+    }
+    else {
+        currTotal += playerRoll;
+        currTotalDisplay.value = currTotal.toString();
+    }
 }
 function holdDie() {
     changePlayers();
