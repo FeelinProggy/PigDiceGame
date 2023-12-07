@@ -59,6 +59,7 @@ function createNewGame() {
 function rollDie() {
     let currTotalDisplay = document.getElementById("total");
     let currTotal = parseInt(currTotalDisplay.value);
+    let dieDisplay = document.getElementById("die");
     let playerRoll = generateRandomValue(1, 6);
     if (playerRoll == 1) {
         currTotalDisplay.value = "0";
@@ -68,7 +69,20 @@ function rollDie() {
         currTotal += playerRoll;
         currTotalDisplay.value = currTotal.toString();
     }
+    dieDisplay.value = playerRoll.toString();
 }
 function holdDie() {
+    let currTotalDisplay = document.getElementById("total");
+    let currTotal = parseInt(currTotalDisplay.value);
+    let currentPlayerName = document.getElementById("current").innerText;
+    if (currentPlayerName == player1.name) {
+        player1.score += currTotal;
+        document.getElementById("score1").value = player1.score.toString();
+    }
+    else {
+        player2.score += currTotal;
+        document.getElementById("score2").value = player2.score.toString();
+    }
+    currTotalDisplay.value = "0";
     changePlayers();
 }

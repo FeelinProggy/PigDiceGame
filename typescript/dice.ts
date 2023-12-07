@@ -87,8 +87,9 @@ function createNewGame(){
 }
 
 function rollDie():void{
-    let currTotalDisplay = (<HTMLInputElement>document.getElementById("total"))
+    let currTotalDisplay = (<HTMLInputElement>document.getElementById("total"));
     let currTotal = parseInt(currTotalDisplay.value);
+    let dieDisplay = (<HTMLInputElement>document.getElementById("die"));
     
     //roll the die and get a random value 1 - 6 (use generateRandomValue function)
     let playerRoll = generateRandomValue(1, 6);
@@ -105,20 +106,29 @@ function rollDie():void{
         currTotalDisplay.value = currTotal.toString();
     }
     
-    //if the roll is greater than 1
-    //  add roll value to current total
-
-    //set the die roll to value player rolled
-    //display current total on form
+    dieDisplay.value = playerRoll.toString();
 }
 
 function holdDie():void{
     //get the current turn total
+    let currTotalDisplay = (<HTMLInputElement>document.getElementById("total"));
+    let currTotal = parseInt(currTotalDisplay.value);
+    
     //determine who the current player is
+    let currentPlayerName = (<HTMLElement>document.getElementById("current")).innerText;
+
+    if(currentPlayerName == player1.name){
+        player1.score += currTotal;
+        (<HTMLInputElement>document.getElementById("score1")).value = player1.score.toString();
+    }
+    else{
+        player2.score += currTotal;
+        (<HTMLInputElement>document.getElementById("score2")).value = player2.score.toString();
+    }
     //add the current turn total to the player's total score
 
     //reset the turn total to 0
-
+    currTotalDisplay.value = "0";
     //change players
     changePlayers();
 }
