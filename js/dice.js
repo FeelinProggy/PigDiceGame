@@ -66,6 +66,12 @@ function rollDie() {
         currTotal += playerRoll;
         currTotalDisplay.value = currTotal.toString();
     }
+    let potentialScore = currentPlayer.score + currTotal;
+    if (potentialScore >= 20) {
+        holdDie();
+        changePlayers();
+        declareWinner(currentPlayer);
+    }
 }
 function holdDie() {
     let currTotalDisplay = document.getElementById("total");
@@ -85,4 +91,7 @@ function holdDie() {
 function generateRandomValue(minValue, maxValue) {
     var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
     return random;
+}
+function declareWinner(winner) {
+    alert(winner.name + " wins! \nScore: " + winner.score);
 }

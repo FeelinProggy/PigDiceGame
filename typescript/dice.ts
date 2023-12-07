@@ -82,7 +82,7 @@ function changePlayers():void{
 
 /**
  * rollDie function calls generateRandomValue() to simulate the rolling die,
- * displays the roll result and running total, and canges players if the roll is 1.
+ * displays the roll result and running total, and changes players if the roll is 1.
  */
 function rollDie():void{
     let currTotalDisplay = (<HTMLInputElement>document.getElementById("total"));
@@ -108,8 +108,14 @@ function rollDie():void{
         // display the current total
         currTotalDisplay.value = currTotal.toString();
     }
-}
+    let potentialScore = currentPlayer.score + currTotal;
 
+    if (potentialScore >= 20){
+        holdDie();
+        changePlayers();
+        declareWinner(currentPlayer);
+    }
+}
 /**
  * 
  */
@@ -145,4 +151,9 @@ function generateRandomValue(minValue:number, maxValue:number):number{
     var random = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
     
     return random;
+}
+
+function declareWinner(winner:Player){
+    
+    alert(winner.name + " wins! \nScore: " + winner.score);
 }
